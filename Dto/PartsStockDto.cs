@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using VibeDevTest.Models;
 
 namespace VibeDevTest.Dto
 {
@@ -12,5 +13,14 @@ namespace VibeDevTest.Dto
         public string Price { get; set; }
         public int Quantity { get; set; }
         public bool Availability { get; set; }
+
+        public PartsStockDto(PartsStock p)
+        {
+            Id = p.Id;
+            Name = p.Name;
+            Price = p.Price;
+            Quantity = p.Quantity;
+            Availability = p.Availability;
+        }
     }
 }

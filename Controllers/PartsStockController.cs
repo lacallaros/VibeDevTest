@@ -24,25 +24,25 @@ namespace VibeDevTest.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PartsStock>> GetPartById(int id)
+        public async Task<IActionResult> GetPartById(int id)
         {
             return Ok(await psRep.GetPartByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<PartsStock>>> AddPart(PartsStock part)
+        public async Task<IActionResult> AddPart(PartsStock part)
         {
             return Ok(await psRep.AddPartAsync(part));
         }
 
         [HttpPut]
-        public async Task<ActionResult<List<PartsStock>>> UpdatePart(PartsStock request)
+        public async Task<IActionResult> UpdatePart(PartsStock request)
         {
             return Ok(await psRep.UpdatePartAsync(request));
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<PartsStock>>> DeletePart(int id)
+        public async Task<IActionResult> DeletePart(int id)
         {
             return Ok(await psRep.DeletePartByIdAsync(id));
         }

@@ -38,14 +38,7 @@ namespace VibeDevTest.Data.Repositories
 
             parts.ForEach(part =>
             {
-                var partsStockDto = new PartsStockDto
-                {
-                    Id = part.Id,
-                    Name = part.Name,
-                    Price = part.Price,
-                    Quantity = part.Quantity,
-                    Availability = part.Availability
-                };
+                var partsStockDto = new PartsStockDto(part);
                 partsDto.Add(partsStockDto);
             });
 
@@ -54,16 +47,10 @@ namespace VibeDevTest.Data.Repositories
 
         public async Task<PartsStockDto> GetPartByIdAsync(int id)
         {
-            var part = await context.PartsStocks.FindAsync(id);
-            var partDto = new PartsStockDto
-            {
-                Id = part.Id,
-                Name = part.Name,
-                Price = part.Price,
-                Quantity = part.Quantity,
-                Availability = part.Availability
-            };
-            return partDto;
+            PartsStock p = await context.PartsStocks.FindAsync(id);
+            PartsStockDto psDto = new PartsStockDto(p);
+
+            return psDto;
         }
 
         public async Task<List<PartsStock>> UpdatePartAsync(PartsStock request)
