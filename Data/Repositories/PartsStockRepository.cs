@@ -1,4 +1,5 @@
-﻿using VibeDevTest.Interfaces;
+﻿using VibeDevTest.Dto;
+using VibeDevTest.Interfaces;
 using VibeDevTest.Models;
 
 namespace VibeDevTest.Data.Repositories
@@ -30,14 +31,39 @@ namespace VibeDevTest.Data.Repositories
             return await context.PartsStocks.ToListAsync();
         }
 
-        public async Task<List<PartsStock>> GetAllPartsAsync()
+        public async Task<List<PartsStockDto>> GetAllPartsAsync()
         {
-            return await context.PartsStocks.ToListAsync();
+            var parts = await context.PartsStocks.ToListAsync();
+            var partsDto = new List<PartsStockDto>();
+
+            parts.ForEach(part =>
+            {
+                var partsStockDto = new PartsStockDto
+                {
+                    Id = part.Id,
+                    Name = part.Name,
+                    Price = part.Price,
+                    Quantity = part.Quantity,
+                    Availability = part.Availability
+                };
+                partsDto.Add(partsStockDto);
+            });
+
+            return partsDto;
         }
 
-        public async Task<PartsStock> GetPartByIdAsync(int id)
+        public async Task<PartsStockDto> GetPartByIdAsync(int id)
         {
-            return await context.PartsStocks.FindAsync(id);
+            var part = await context.PartsStocks.FindAsync(id);
+            var partDto = new PartsStockDto
+            {
+                Id = part.Id,
+                Name = part.Name,
+                Price = part.Price,
+                Quantity = part.Quantity,
+                Availability = part.Availability
+            };
+            return partDto;
         }
 
         public async Task<List<PartsStock>> UpdatePartAsync(PartsStock request)
