@@ -1,4 +1,7 @@
-﻿namespace VibeDevTest.Data
+﻿using VibeDevTest.Dto;
+using VibeDevTest.Models;
+
+namespace VibeDevTest.Data
 {
     public class DataContext : DbContext
     {

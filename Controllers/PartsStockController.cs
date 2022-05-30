@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VibeDevTest.Dto;
+using VibeDevTest.Interfaces;
+using VibeDevTest.Models;
 
 namespace VibeDevTest.Controllers
 {
@@ -7,72 +10,41 @@ namespace VibeDevTest.Controllers
     [ApiController]
     public class PartsStockController : ControllerBase
     {
-        private readonly DataContext context;
+        private readonly IPartsStockRepository psRep;
 
-        public PartsStockController(DataContext context)
+        public PartsStockController(IPartsStockRepository psRep)
         {
-            this.context = context;
+            this.psRep = psRep;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PartsStock>>> Get()
+        public async Task<IActionResult> GetAllParts()
         {
-            return Ok(await context.PartsStocks.ToListAsync());
+            return Ok(await psRep.GetAllPartsAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PartsStock>> Get(int id)
+        public async Task<ActionResult<PartsStock>> GetPartById(int id)
         {
-            var part = await context.PartsStocks.FindAsync(id);
-            if (part == null)
-            {
-                return BadRequest("Part not found.");
-            }
-            
-            return Ok(part);
+            return Ok(await psRep.GetPartByIdAsync(id));
         }
 
         [HttpPost]
         public async Task<ActionResult<List<PartsStock>>> AddPart(PartsStock part)
         {
-            context.PartsStocks.Add(part);
-            await context.SaveChangesAsync();
-
-            return Ok(await context.PartsStocks.ToListAsync());
+            return Ok(await psRep.AddPartAsync(part));
         }
 
         [HttpPut]
         public async Task<ActionResult<List<PartsStock>>> UpdatePart(PartsStock request)
         {
-            var dbPart = await context.PartsStocks.FindAsync(request.Id);
-            if (dbPart == null)
-            {
-                return BadRequest("Part not found.");
-            }
-
-            dbPart.Name = request.Name;
-            dbPart.Price = request.Price;
-            dbPart.Availability = request.Availability;
-            dbPart.Quantity = request.Quantity;
-
-            await context.SaveChangesAsync();
-
-            return Ok(await context.PartsStocks.ToListAsync());
+            return Ok(await psRep.UpdatePartAsync(request));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<PartsStock>>> DeletePart(int id)
         {
-            var dbPart = await context.PartsStocks.FindAsync(id);
-            if (dbPart == null)
-            {
-                return BadRequest("Part not found.");
-            }
-            
-            context.PartsStocks.Remove(dbPart);
-            await context.SaveChangesAsync();
-
-            return Ok(await context.PartsStocks.ToListAsync());
+            return Ok(await psRep.DeletePartByIdAsync(id));
         }
     }
 }
