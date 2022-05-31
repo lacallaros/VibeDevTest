@@ -7,5 +7,6 @@
         public string Price { get; set; }
         public int Quantity { get; set; }
         public bool Availability { get; set; }
+        public List<Material> Materials { get; set; }
     }
 }
