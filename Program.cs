@@ -7,13 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddScoped<IPartsStockRepository, PartsStockRepository>();
-builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
+builder.Services.AddScoped<ICarMakeRepository, CarMakeRepository>();
+builder.Services.AddScoped<ICarModelRepository, CarModelRepository>();
+builder.Services.AddScoped<ICarModelDetailRepository, CarModelDetailRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
