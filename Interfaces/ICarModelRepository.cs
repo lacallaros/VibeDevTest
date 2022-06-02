@@ -8,7 +8,7 @@ namespace VibeDevTest.Interfaces
     {
         Task<List<CarModelDto>> GetAllCarModelsAsync();
         Task<CarModelDto> GetCarModelByIdAsync(int id);
-        Task<CarModel> AddCarModelAsync(CarModel carModel);
+        Task<CarModel> AddCarModelAsync(CarModelDto carModel);
         Task<List<CarModel>> UpdateCarModelAsync(int id, JsonPatchDocument carModel);
         Task<List<CarModel>> DeleteCarModelAsync(int id);
     }

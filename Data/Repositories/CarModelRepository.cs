@@ -14,12 +14,13 @@ namespace VibeDevTest.Data.Repositories
             this.context = context;
         }
 
-        public async Task<CarModel> AddCarModelAsync(CarModel carModel)
+        public async Task<CarModel> AddCarModelAsync(CarModelDto carModel)
         {
             var newCarModel = new CarModel()
             {
                 Name = carModel.Name,
                 Chassis = carModel.Chassis,
+                MakeId = carModel.MakeId
             };
 
             context.CarModels.Add(newCarModel);
@@ -28,9 +29,14 @@ namespace VibeDevTest.Data.Repositories
             return newCarModel;
         }
 
-        public Task<List<CarModel>> DeleteCarModelAsync(int id)
+        public async Task<List<CarModel>> DeleteCarModelAsync(int id)
         {
-            throw new NotImplementedException();
+            var dbCarModel = await context.CarModels.FindAsync(id);
+
+            context.CarModels.Remove(dbCarModel);
+            await context.SaveChangesAsync();
+
+            return await context.CarModels.ToListAsync();
         }
 
         public async Task<List<CarModelDto>> GetAllCarModelsAsync()
@@ -47,14 +53,23 @@ namespace VibeDevTest.Data.Repositories
             return carModelsDto;
         }
 
-        public Task<CarModelDto> GetCarModelByIdAsync(int id)
+        public async Task<CarModelDto> GetCarModelByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            CarModel carModel = await context.CarModels.FindAsync(id);
+            CarModelDto carModelDto = new CarModelDto(carModel);
+
+            return carModelDto;
         }
 
-        public Task<List<CarModel>> UpdateCarModelAsync(int id, JsonPatchDocument carModel)
+        public async Task<List<CarModel>> UpdateCarModelAsync(int id, JsonPatchDocument carModel)
         {
-            throw new NotImplementedException();
+            var dbCarModel = await context.CarModels.FindAsync(id);
+
+            carModel.ApplyTo(dbCarModel);
+
+            await context.SaveChangesAsync();
+
+            return await context.CarModels.ToListAsync();
         }
     }
 }

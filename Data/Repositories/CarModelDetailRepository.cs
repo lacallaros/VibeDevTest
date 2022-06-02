@@ -1,4 +1,6 @@
-﻿using VibeDevTest.Interfaces;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using VibeDevTest.Dto;
+using VibeDevTest.Interfaces;
 using VibeDevTest.Models;
 
 namespace VibeDevTest.Data.Repositories
@@ -12,29 +14,60 @@ namespace VibeDevTest.Data.Repositories
             this.context = context;
         }
 
-        public Task<CarModel> AddCarModelDetailAsync(CarModel carModel)
+        public async Task<CarModelDetail> AddCarModelDetailAsync(CarModelDetailDto carModelDetail)
         {
-            throw new NotImplementedException();
+            var newCarModelDetail = new CarModelDetail()
+            {
+                Description = carModelDetail.Description,
+            };
+
+            context.CarModelDetails.Add(newCarModelDetail);
+            await context.SaveChangesAsync();
+
+            return newCarModelDetail;
         }
 
-        public Task<CarModel> DeleteCarModelDetailAsync(int id)
+        public async Task<List<CarModelDetail>> DeleteCarModelDetailAsync(int id)
         {
-            throw new NotImplementedException();
+            var dbCarModelDetail = await context.CarModelDetails.FindAsync(id);
+
+            context.CarModelDetails.Remove(dbCarModelDetail);
+            await context.SaveChangesAsync();
+
+            return await context.CarModelDetails.ToListAsync();
         }
 
-        public Task<List<CarModelDetail>> GetAllCarModelDetailsAsync()
+        public async Task<List<CarModelDetailDto>> GetAllCarModelDetailsAsync()
         {
-            throw new NotImplementedException();
+            var carModelDetails = await context.CarModelDetails.ToListAsync();
+            var carModelDetailsDto = new List<CarModelDetailDto>();
+
+            carModelDetails.ForEach(carModelDetail =>
+            {
+                var carModelDetailDto = new CarModelDetailDto(carModelDetail);
+                carModelDetailsDto.Add(carModelDetailDto);
+            });
+
+            return carModelDetailsDto;
         }
 
-        public Task<CarModel> GetCarModelDetailByIdAsync(int id)
+        public async Task<CarModelDetailDto> GetCarModelDetailByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            CarModelDetail carModelDetail = await context.CarModelDetails.FindAsync(id);
+            CarModelDetailDto carModelDetailDto = new CarModelDetailDto(carModelDetail);
+
+            return carModelDetailDto;
         }
 
-        public Task<CarModel> UpdateCarModelDetailAsync(CarModel carModel)
+        public async Task<List<CarModelDetail>> UpdateCarModelDetailAsync(int id, JsonPatchDocument carModelDetail)
         {
-            throw new NotImplementedException();
+            var dbCarModelDetail = await context.CarModelDetails.FindAsync(id);
+
+            carModelDetail.ApplyTo(dbCarModelDetail);
+
+            await context.SaveChangesAsync();
+
+            return await context.CarModelDetails.ToListAsync();
         }
     }
 }

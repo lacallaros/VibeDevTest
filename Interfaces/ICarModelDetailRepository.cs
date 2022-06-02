@@ -1,13 +1,15 @@
-﻿using VibeDevTest.Models;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using VibeDevTest.Dto;
+using VibeDevTest.Models;
 
 namespace VibeDevTest.Interfaces
 {
     public interface ICarModelDetailRepository
     {
-        Task<List<CarModelDetail>> GetAllCarModelDetailsAsync();
-        Task<CarModel> GetCarModelDetailByIdAsync(int id);
-        Task<CarModel> AddCarModelDetailAsync(CarModel carModel);
-        Task<CarModel> UpdateCarModelDetailAsync(CarModel carModel);
-        Task<CarModel> DeleteCarModelDetailAsync(int id);
+        Task<List<CarModelDetailDto>> GetAllCarModelDetailsAsync();
+        Task<CarModelDetailDto> GetCarModelDetailByIdAsync(int id);
+        Task<CarModelDetail> AddCarModelDetailAsync(CarModelDetailDto carModelDetail);
+        Task<List<CarModelDetail>> UpdateCarModelDetailAsync(int id, JsonPatchDocument carModelDetail);
+        Task<List<CarModelDetail>> DeleteCarModelDetailAsync(int id);
     }
 }
