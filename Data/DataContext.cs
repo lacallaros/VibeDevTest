@@ -1,5 +1,4 @@
-﻿using VibeDevTest.Dto;
-using VibeDevTest.Models;
+﻿using VibeDevTest.Models;
 
 namespace VibeDevTest.Data
 {
@@ -7,6 +6,9 @@ namespace VibeDevTest.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<PartsStock> PartsStocks { get; set; }
+        public DbSet<CarMake> CarMakes { get; set; }
+        public DbSet<CarModel> CarModels { get; set; }
+        public DbSet<CarModelDetail> CarModelDetails { get; set; }
     }
 }
+    
